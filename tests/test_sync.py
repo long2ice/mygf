@@ -9,12 +9,12 @@ from mygf.backends.redis import RedisBackend
 from mygf.decorators import register_sync
 
 backend = RedisBackend()
-SyncCache.init(backend)
+SyncCache.init(backend, 'test')
 
 redis = aioredis.create_redis('redis://127.0.0.1:6379', encoding='utf8')
 
 
-@register_sync('test', 'test')
+@register_sync('test')
 @ring.aioredis(redis, expire=30)
 async def test():
     return 1
