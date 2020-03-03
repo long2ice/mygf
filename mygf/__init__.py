@@ -1,6 +1,6 @@
 from pymysqlreplication import BinLogStreamReader
 from pymysqlreplication.row_event import DeleteRowsEvent, UpdateRowsEvent, WriteRowsEvent
-
+import importlib
 from .sync import SyncLogPos, SyncCache
 
 __version__ = '0.0.1'
@@ -65,6 +65,10 @@ def run_forever(
         only_schemas,
         only_tables
 ):
+    if isinstance(backend_cls, str):
+        modules = backend_cls.split('.')
+        module = importlib.import_module('.'.join(modules[:-1]))
+        backend_cls = getattr(module, modules[-1])
     backend = backend_cls(**backend_kwargs)
 
     SyncCache.init(backend)
