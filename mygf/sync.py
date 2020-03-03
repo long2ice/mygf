@@ -30,10 +30,12 @@ class SyncLogPos:
 class SyncCache:
     _backend = None
     _prefix = 'sync_cache'
+    default_schema = None
 
     @classmethod
-    def init(cls, backend: BaseBackend):
+    def init(cls, backend: BaseBackend, default_schema=None):
         cls._backend = backend
+        cls.default_schema = default_schema
 
     @classmethod
     def _get_sync_key(cls, schema, table):

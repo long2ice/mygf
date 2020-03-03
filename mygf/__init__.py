@@ -63,7 +63,8 @@ def run_forever(
         mysql_user,
         mysql_password,
         only_schemas,
-        only_tables
+        only_tables,
+        default_schema=None
 ):
     if isinstance(backend_cls, str):
         modules = backend_cls.split('.')
@@ -71,7 +72,7 @@ def run_forever(
         backend_cls = getattr(module, modules[-1])
     backend = backend_cls(**backend_kwargs)
 
-    SyncCache.init(backend)
+    SyncCache.init(backend, default_schema)
     SyncLogPos.init(backend, log_pos_prefix='mysql_binlog_pos', server_id=server_id)
 
     log_file, log_pos = SyncLogPos.get_log_pos()
