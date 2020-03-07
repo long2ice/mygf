@@ -1,3 +1,6 @@
+import logging
+import sys
+
 from pymysqlreplication import BinLogStreamReader
 from pymysqlreplication.row_event import DeleteRowsEvent, UpdateRowsEvent, WriteRowsEvent
 import importlib
@@ -9,6 +12,7 @@ __version__ = '0.0.1'
 class MyGf:
     _bin_log_stream = None
     _server_id = None
+    logger = logging.getLogger('mygf.MyGf')
 
     @classmethod
     def init(
@@ -44,6 +48,7 @@ class MyGf:
 
     @classmethod
     def start_sync(cls):
+        cls.logger.info('开始监听binlog...')
         bin_log_stream = cls._bin_log_stream
         for binlog_event in bin_log_stream:
             schema = binlog_event.schema
@@ -52,6 +57,18 @@ class MyGf:
             log_file = bin_log_stream.log_file
             SyncLogPos.set_log_pos_slave(log_file, log_pos)
             SyncCache.clean_cache(schema, table)
+
+
+def init_logging():
+    logger = logging.getLogger("mygf")
+    logger.setLevel(logging.DEBUG)
+    sh = logging.StreamHandler(sys.stdout)
+    sh.setLevel(logging.DEBUG)
+    sh.setFormatter(logging.Formatter(
+        fmt="[%(asctime)s] [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(module)s:%(funcName)s] [%(levelname)s]- %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S"
+    ))
+    logger.addHandler(sh)
 
 
 def run_forever(
@@ -66,6 +83,8 @@ def run_forever(
         only_tables,
         default_schema=None
 ):
+    init_logging()
+    logger = logging.getLogger("mygf.main")
     if isinstance(backend_cls, str):
         modules = backend_cls.split('.')
         module = importlib.import_module('.'.join(modules[:-1]))
@@ -76,6 +95,7 @@ def run_forever(
     SyncLogPos.init(backend, log_pos_prefix='mysql_binlog_pos', server_id=server_id)
 
     log_file, log_pos = SyncLogPos.get_log_pos()
+    logger.info(f'binlog信息：{log_file}：{log_pos}')
 
     MyGf.init(
         host=mysql_host,

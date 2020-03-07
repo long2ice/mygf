@@ -1,4 +1,8 @@
+import logging
+
 from mygf.backends import BaseBackend
+
+logger = logging.getLogger('mygf.sync')
 
 
 class SyncLogPos:
@@ -52,6 +56,7 @@ class SyncCache:
         keys = cls._backend.smembers(cache_key)
         if keys:
             cls._backend.delete(*keys)
+            logger.info(f'成功清除缓存keys：{keys}')
 
     @classmethod
     def clean_sync_key(cls, schema, table):
