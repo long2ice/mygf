@@ -81,7 +81,9 @@ def run_forever(
         mysql_password,
         only_schemas,
         only_tables,
-        default_schema=None
+        init_log_file=None,
+        init_log_pos=None,
+        default_schema=None,
 ):
     init_logging()
     logger = logging.getLogger("mygf.main")
@@ -102,8 +104,8 @@ def run_forever(
         port=mysql_port,
         user=mysql_user,
         password=mysql_password,
-        log_file=log_file,
-        log_pos=log_pos,
+        log_file=log_file or init_log_file,
+        log_pos=log_pos or init_log_pos,
         only_schemas=only_schemas,
         only_tables=only_tables,
         server_id=server_id
