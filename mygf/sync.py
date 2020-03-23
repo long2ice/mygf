@@ -26,7 +26,7 @@ class SyncLogPos:
     @classmethod
     def get_log_pos(cls):
         log_position = cls._backend.hgetall(cls._key) or {}
-        return log_position.get('log_file'), int(log_position.get('log_pos'))
+        return log_position.get('log_file'), log_position.get('log_pos')
 
 
 class SyncCache:
