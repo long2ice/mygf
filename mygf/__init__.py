@@ -97,6 +97,8 @@ def run_forever(
     SyncLogPos.init(backend, log_pos_prefix='mysql_binlog_pos', server_id=server_id)
 
     log_file, log_pos = SyncLogPos.get_log_pos()
+    log_file = log_file or init_log_file
+    log_pos = log_pos or init_log_pos
     logger.info(f'binlog信息：{log_file}：{log_pos}')
 
     MyGf.init(
@@ -104,8 +106,8 @@ def run_forever(
         port=mysql_port,
         user=mysql_user,
         password=mysql_password,
-        log_file=log_file or init_log_file,
-        log_pos=int(log_pos or init_log_pos),
+        log_file=log_file,
+        log_pos=int(log_pos),
         only_schemas=only_schemas,
         only_tables=only_tables,
         server_id=server_id
