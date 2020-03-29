@@ -15,7 +15,7 @@ class BaseBackend:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def hmset(self, name, keys, *args):
+    def hmset(self, name, mapping):
         raise NotImplementedError
 
     @abc.abstractmethod

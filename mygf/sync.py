@@ -18,7 +18,7 @@ class SyncLogPos:
 
     @classmethod
     def set_log_pos_slave(cls, log_file, log_pos):
-        logger.info(f'set log_file：{log_file}，log_pos：{log_pos}')
+        logger.info(f'set {cls._key} log_file：{log_file}，log_pos：{log_pos}')
         cls._backend.hmset(cls._key, {
             'log_pos': log_pos,
             'log_file': log_file

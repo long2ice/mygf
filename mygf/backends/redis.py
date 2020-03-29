@@ -18,9 +18,8 @@ class RedisBackend(BaseBackend):
     def delete(self, *names):
         return self.ins.delete(*names)
 
-    def hmset(self, name, keys, *args):
-        return self.ins.hmget(name, keys, *args)
+    def hmset(self, name, mapping):
+        return self.ins.hmset(name, mapping)
 
     def hgetall(self, name):
         return self.ins.hgetall(name)
-
