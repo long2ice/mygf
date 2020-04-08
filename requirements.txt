@@ -7,6 +7,6 @@ mysql-replication==0.21
 pycparser==2.20
 pymysql==0.9.3
 redis==3.4.1
--e git+https://e.coding.net/prismslight/ring.git@32cd8366113ee917affc7d95e38147822abb118e#egg=ring
+ring==0.7.3
 six==1.14.0
 wirerope==0.3.0
