@@ -9,7 +9,7 @@ license = "MIT"
 python = "^3.8"
 mysql-replication = "*"
 redis = "*"
-ring = "*"
+ring = {git = "https://e.coding.net/prismslight/ring.git"}
 aioredis = "*"
 cryptography = "*"
 
